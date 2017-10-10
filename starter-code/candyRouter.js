@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 //allows us to change app.get to router.get
 //creates a mini app called router
+router.use(bodyParser.json());
 
 //What would need to go into candies
 //in order to pass our first test?
@@ -23,7 +24,6 @@ router.get('/', function(req, res) {
 	// What would go here? 
 	// Hint: we want all candies in JSON format
 	res.json(candies);
-	router.use(bodyParser.json());
 	console.log('Something is working');
 });
 
@@ -31,32 +31,43 @@ router.get('/', function(req, res) {
 
 //gets just one candy
 //SHOW
+//I feel like this is more compolicated than it needs to be but it works
 router.get('/:id', function(req, res){
-	router.param('id');
-	router.use(bodyParser.json());
-	console.log('Something is working 2');
+	console.log(candies.length);
+	console.log(req.params.id);//always as strings
+	for( var i=0; i < candies.length; i++){
+		console.log(candies[i].id );
+		if (candies[i].id == req.params.id) {
+			//console.log()
+			res.json(candies[i]);
+
+		}
+	}
+	res.json('500 error');
+	// router.use(bodyParser.json());
+	// console.log('Something is working 2');
 });
 
-//gets a new html form
-//router.get('/new', function(req, res){
-
-//});
-
+//Create
 //makes a new candy
-//router.post('/', function(req, res){
+router.post('/', function(req, res){
+	candies.push(req.body); // add the new cady to the body
+});
 
-//});
+//Second index
+//upadates any info
+router.put('/id:/edit', function(req,res){
+	candies.find(id);
+	candies.push({"name":"Marshmallows","color":"white"});
 
-//updates array with new info
-//router.get('/id:/edit', function(req,res){
+});
 
-//});
-
+//DELETE
 //deltes a candy
- //router.delete('/:id', function(req, res){
+router.delete('/:id', function(req, res){
+	candies.find(req.body);
+	candies.push();
+});
 
- //});
-
- //app.use("/candy", router);
 
 module.exports = router;
