@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
 	res.json(candies);
 	console.log('Something is working');
 });
-
+//this one works
 // Fill out the rest of the routes here
 
 //gets just one candy
@@ -47,27 +47,42 @@ router.get('/:id', function(req, res){
 	// router.use(bodyParser.json());
 	// console.log('Something is working 2');
 });
+//this one works
 
 //Create
 //makes a new candy
 router.post('/', function(req, res){
-	candies.push(req.body); // add the new cady to the body
+	var new_candy = new candy(req.body);
+  	new_candy.save(function(err, task) {
+    	if (err)
+      		res.send(err);
+    	res.json(candies);
+  	});
 });
 
-//Second index
+//PUT
 //upadates any info
-router.put('/id:/edit', function(req,res){
-	candies.find(id);
-	candies.push({"name":"Marshmallows","color":"white"});
-
+//find one and update
+router.put('/id:/edit', function(req,res) {
+	candies.findOneAndUpdate({_id: req.params.candiesId}, req.body, {new: true}, function(err, task) {
+    if (err)
+      res.send(err);
+    res.json(task);
+  });
 });
+
 
 //DELETE
 //deltes a candy
 router.delete('/:id', function(req, res){
-	candies.find(req.body);
-	candies.push();
+	candies.remove({
+	_id: req.params.candiesId}, function(err, task) {
+    		if (err)
+      			res.send(err);
+    res.json({ message: 'Candy successfully deleted' });
+  });
 });
+
 
 
 module.exports = router;
