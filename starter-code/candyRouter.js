@@ -52,35 +52,48 @@ router.get('/:id', function(req, res){
 //Create
 //makes a new candy
 router.post('/', function(req, res){
-	var new_candy = new candy(req.body);
-  	new_candy.save(function(err, task) {
-    	if (err)
-      		res.send(err);
-    	res.json(candies);
-  	});
+	console.log(req.body);//console logging the new candy
+	candies.push(req.body);//pushing the new candy into the array
+	res.json(req.body);//printing the new candy into the array
 });
+//this one works
 
 //PUT
 //upadates any info
 //find one and update
-router.put('/id:/edit', function(req,res) {
-	candies.findOneAndUpdate({_id: req.params.candiesId}, req.body, {new: true}, function(err, task) {
-    if (err)
-      res.send(err);
-    res.json(task);
-  });
+router.put('/:id', function(req, res) {
+	//select the candy you want by the id of the candy
+	//set the previous name and color to the update name and color
+	//push the new name and color into the array
+	//display the new name and color on the body
+	for( var i=0; i < candies.length; i++){
+		console.log(candies[i].id );
+		if (candies[i].id == req.params.id) {
+			//parm expecting a value
+			//console.log()
+			//?? req.body.name
+			candies[i].name = req.body.name; 
+			candies[i].color = req.body.color;
+			return res.json(candies[i]);
+		}
+	}
+	res.json("500 error");
 });
 
 
 //DELETE
 //deltes a candy
 router.delete('/:id', function(req, res){
-	candies.remove({
-	_id: req.params.candiesId}, function(err, task) {
-    		if (err)
-      			res.send(err);
-    res.json({ message: 'Candy successfully deleted' });
-  });
+	for( var i=0; i < candies.length; i++){
+		console.log(candies[i].id );
+		if (candies[i].id == req.params.id) {
+			//parm expecting a value
+			//console.log()
+			//?? req.body.name
+			delete candies[i];
+			return res.json({"message" : "deleted"});
+		}
+	}
 });
 
 
